@@ -1,0 +1,110 @@
+<html>
+<head>
+  <title>Opportunity Search</title>
+  <style>
+    .menu-bar {
+        width: 100%;
+        height: 50px;
+        background-color: #333;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .menu-item {
+        margin: 0 20px;
+        cursor: pointer;
+      }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    input[type="text"], input[type="email"] {
+      width: 300px;
+      height: 40px;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button[type="submit"] {
+      width: 300px;
+      height: 40px;
+      background-color: blue;
+      color: white;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .results {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .result {
+      margin-top: 20px;
+      width: 300px;
+      padding: 20px;
+      border: 1px solid gray;
+      border-radius: 10px;
+      text-align: center;
+    }
+  </style>
+  <script>
+    function search() {
+      // Get the values entered by the user in the form
+      var skills = document.getElementById("skills").value;
+      var interests = document.getElementById("interests").value;
+
+      // Get the list of opportunities from local storage
+      var opportunities = JSON.parse(localStorage.getItem("opportunities")) || [];
+
+      // Filter the opportunities to only show those that match the user's skills and interests
+      var matchingOpportunities = opportunities.filter(function(opportunity) {
+        return opportunity.skills.includes(skills) && opportunity.interests.includes(interests);
+      });
+
+      // Show the matching opportunities
+      var resultsContainer = document.getElementById("results");
+      resultsContainer.innerHTML = "";
+      matchingOpportunities.forEach(function(opportunity) {
+        var result = document.createElement("div");
+        result.classList.add("result");
+        result.innerHTML = "<h3>" + opportunity.name + "</h3>" +
+                           "<p>Skills: " + opportunity.skills.join(", ") + "</p>" +
+                           "<p>Interests: " + opportunity.interests.join(", ") + "</p>";
+        resultsContainer.appendChild(result);
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="menu-bar">
+    <div class="menu-item"><a href="index.html" style="color: white">Home</a></div>
+    <div class="menu-item"><a href="profile.html" style="color: white">Profile</a></div>
+    <div class="menu-item"><a href="opportunity.html" style="color: white">Opportunity</a></div>
+    <div class="menu-item"><a href="orglogin.html" style="color: white">Organization Login</a></div>
+    <div class="menu-item"><a href="orgreg.html" style="color: white">Register Organization</a></div>
+    <div class="menu-item"><a href="registration.html" style="color: white">Volunteer Registration</a></div>
+  </div>
+  <h1>Opportunity Search</h1>
+  <form>
+    <label for="skills">Skills:</label>
+    <input type="text" id="skills">
+    <label for="interests">Interests:</label>
+    <input type="text" id="interests">
+    <button type="button" onclick="search()">Search</button>
+  </form>
+  <div id="results" class="results"></div>
+  </body>
+</html>
